@@ -1,0 +1,18 @@
+.prikaz-fajla
+{
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tekst
+{
+    padding: 10px;
+    height: fit-content;
+    width: 60vw;
+    border: 1px solid black;
+    text-align: center;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
