@@ -106,11 +106,13 @@ internal class WebServer
                 Console.WriteLine(punaPutanja);
                 string binPutanja = $"{punaPutanja.Remove(punaPutanja.IndexOf(".txt"))}Bin.bin";
                 tekst = TekstKonverter.TekstualniUBinarni(punaPutanja, binPutanja);
+                tekst = JsonConvert.SerializeObject(tekst);
             }
             else
             {
                 string txtPutanja = $"{punaPutanja.Remove(punaPutanja.IndexOf("Bin.bin"))}.txt";
                 tekst = TekstKonverter.BinarniUTekstualni(punaPutanja, txtPutanja);
+                tekst = JsonConvert.SerializeObject(tekst);
             }
 
             kes.DodajIliAzuriraj(putanja, tekst);
