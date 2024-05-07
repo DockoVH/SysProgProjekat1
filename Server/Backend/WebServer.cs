@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Backend;
 
@@ -68,6 +65,21 @@ internal class WebServer
 
         string putanja = request.Url.LocalPath.TrimStart('/');
 
+        if(request.Url.LocalPath == "/fajlovi/txt")
+        {
+            List<string> txtFajlovi = ListaFajlova.TxtFajlovi(AppDomain.CurrentDomain.BaseDirectory);
+            string jsonOdg = JsonConvert.SerializeObject(txtFajlovi);
+            PosaljiOdgovor(response, jsonOdg);
+            return;
+        }
+        else if(request.Url.LocalPath == "/fajlovi/bin")
+        {
+            List<string> binFajlovi = ListaFajlova.BinFajlovi(AppDomain.CurrentDomain.BaseDirectory);
+            string jsonOdg = JsonConvert.SerializeObject(binFajlovi);
+            PosaljiOdgovor(response, jsonOdg);
+            return;
+        }
+
         if(kes.TryGet(putanja, out string kesiraniResponse))
         {
             Console.WriteLine($"Vraćen keširani odgovor za: {putanja}");
@@ -118,6 +130,7 @@ internal class WebServer
 
     private void PosaljiOdgovor(HttpListenerResponse response, string body)
     {
+        response.ContentType = "application/json";
         byte[] buff = Encoding.UTF8.GetBytes(body);
         response.ContentLength64 = buff.Length;
         response.OutputStream.Write(buff, 0, buff.Length);
