@@ -130,6 +130,7 @@ internal class WebServer
 
     private void PosaljiOdgovor(HttpListenerResponse response, string body)
     {
+        response.Headers.Add("Access-Control-Allow-Origin", "*");
         response.ContentType = "application/json";
         byte[] buff = Encoding.UTF8.GetBytes(body);
         response.ContentLength64 = buff.Length;
