@@ -11,12 +11,28 @@ namespace Backend
 
         public static List<string> TxtFajlovi(string rootDir)
         {
-            return Directory.GetFiles(rootDir, "*.txt").ToList();
+            List<string> punePutanje = Directory.GetFiles(rootDir, "*.txt").ToList();
+            List<string> imenaFajlova = new();
+
+            foreach (string fajl in punePutanje)
+            {
+                imenaFajlova.Add(Path.GetFileName(fajl));
+            }
+
+            return imenaFajlova;
         }
 
         public static List<string> BinFajlovi(string rootDir)
         {
-            return Directory.GetFiles(rootDir, "*.bin").ToList();
+            List<string> punePutanje = Directory.GetFiles(rootDir, "*.bin").ToList();
+            List<string> imenaFajlova = new();
+
+            foreach (string fajl in punePutanje)
+            {
+                imenaFajlova.Add(Path.GetFileName(fajl));
+            }
+
+            return imenaFajlova;
         }
     }
 }
