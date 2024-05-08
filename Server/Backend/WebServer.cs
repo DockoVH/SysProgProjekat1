@@ -63,7 +63,7 @@ internal class WebServer
         HttpListenerRequest request = context.Request;
         HttpListenerResponse response = context.Response;
 
-        string putanja = request.Url.LocalPath.TrimStart('/');
+        string putanja = request.Url!.LocalPath.TrimStart('/');
 
         if(request.Url.LocalPath == "/fajlovi/txt")
         {
