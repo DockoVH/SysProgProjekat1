@@ -28,6 +28,7 @@ const handleClick = async () => {
                                .then(res => res.text());
         const tekstPolje = document.querySelector('.tekst');
         tekstPolje.innerHTML = response;
+        tekstPolje.style.height = 'fit-content';
     } catch (err) {
         console.log('Greška prilikom konverzije fajla: ', err);
         return;

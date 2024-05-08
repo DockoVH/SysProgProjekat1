@@ -9,19 +9,20 @@
 <body>
     <div class="izbor-fajla">
         <h1>Izbor fajla za konverziju</h1>
-        
-        <label>Izaberite tip fajla</label>
-        <select id="tipFajla" onchange="promenaTipaFajla()">
-            <option value="txt">Tekstualni fajl</option>
-            <option value="bin">Binarni fajl</option>
-        </select>
-
-        <label>Izaberite fajl</label>
-        <select id="fajlovi"></select>
-        <button id="konvertujDugme">Konvertuj</button>
+        <div class="izbor-fajla-kontejner">
+            <label>Izaberite tip fajla:</label>
+            <select id="tipFajla" onchange="promenaTipaFajla()">
+                <option value="txt">Tekstualni fajl</option>
+                <option value="bin">Binarni fajl</option>
+            </select>
+            <label>Izaberite fajl:</label>
+            <select id="fajlovi"></select>
+            <button id="konvertujDugme">Konvertuj</button>
+        </div>
     </div>
 
     <div class="prikaz-fajla">
+        <h1>Sadržaj konvertovanog fajla</h1>
         <div class="tekst"></div>
     </div>  
     <script src="main.js"></script>
