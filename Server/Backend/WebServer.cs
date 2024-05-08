@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -62,7 +63,9 @@ internal class WebServer
 
         HttpListenerRequest request = context.Request;
         HttpListenerResponse response = context.Response;
+        Stopwatch sat = new();
 
+        sat.Start();
         string putanja = request.Url!.LocalPath.TrimStart('/');
 
         if(request.Url.LocalPath == "/fajlovi/txt")
@@ -70,6 +73,8 @@ internal class WebServer
             List<string> txtFajlovi = ListaFajlova.TxtFajlovi(AppDomain.CurrentDomain.BaseDirectory);
             string jsonOdg = JsonConvert.SerializeObject(txtFajlovi);
             PosaljiOdgovor(response, jsonOdg);
+            sat.Stop();
+            Console.WriteLine($"Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalSeconds}s.");
             return;
         }
         else if(request.Url.LocalPath == "/fajlovi/bin")
@@ -77,6 +82,8 @@ internal class WebServer
             List<string> binFajlovi = ListaFajlova.BinFajlovi(AppDomain.CurrentDomain.BaseDirectory);
             string jsonOdg = JsonConvert.SerializeObject(binFajlovi);
             PosaljiOdgovor(response, jsonOdg);
+            sat.Stop();
+            Console.WriteLine($"Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalSeconds}s.");
             return;
         }
 
@@ -84,6 +91,8 @@ internal class WebServer
         {
             Console.WriteLine($"Vraćen keširani odgovor za: {putanja}");
             PosaljiOdgovor(response, kesiraniResponse);
+            sat.Stop();
+            Console.WriteLine($"Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalSeconds}s.");
             return;
         }
 
@@ -126,6 +135,8 @@ internal class WebServer
         }
         finally
         {
+            sat.Stop();
+            Console.WriteLine($"Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalSeconds}s.");
             response.Close();
         }
     }
