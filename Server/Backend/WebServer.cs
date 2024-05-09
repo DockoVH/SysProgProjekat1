@@ -74,7 +74,7 @@ internal class WebServer
             string jsonOdg = JsonConvert.SerializeObject(txtFajlovi);
             PosaljiOdgovor(response, jsonOdg);
             sat.Stop();
-            Console.WriteLine($"Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalSeconds}s.");
+            Console.WriteLine($"Nit : {Thread.CurrentThread.ManagedThreadId}: Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalMilliseconds}ms.");
             return;
         }
         else if(request.Url.LocalPath == "/fajlovi/bin")
@@ -83,16 +83,15 @@ internal class WebServer
             string jsonOdg = JsonConvert.SerializeObject(binFajlovi);
             PosaljiOdgovor(response, jsonOdg);
             sat.Stop();
-            Console.WriteLine($"Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalSeconds}s.");
+            Console.WriteLine($"Nit {Thread.CurrentThread.ManagedThreadId}: Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalMilliseconds}ms.");
             return;
         }
 
         if(kes.TryGet(putanja, out string kesiraniResponse))
         {
-            Console.WriteLine($"Vraćen keširani odgovor za: {putanja}");
-            PosaljiOdgovor(response, kesiraniResponse);
             sat.Stop();
-            Console.WriteLine($"Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalSeconds}s.");
+            Console.WriteLine($"Nit {Thread.CurrentThread.ManagedThreadId}: Vraćen keširani odgovor za: {putanja} za {sat.Elapsed.TotalMilliseconds}ms.");
+            PosaljiOdgovor(response, kesiraniResponse);
             return;
         }
 
@@ -103,7 +102,7 @@ internal class WebServer
 
             if (!File.Exists(punaPutanja))
             {
-                Console.WriteLine("Fajl ne postoji.");
+                Console.WriteLine($"Nit {Thread.CurrentThread.ManagedThreadId}: Fajl ne postoji.");
                 response.StatusCode = (int)HttpStatusCode.NotFound;
                 PosaljiOdgovor(response, "Fajl ne postoji");
                 return;
@@ -112,7 +111,6 @@ internal class WebServer
             string ext = Path.GetExtension(punaPutanja);
             if (ext.Equals(".txt", StringComparison.OrdinalIgnoreCase))
             {
-                Console.WriteLine(punaPutanja);
                 string binPutanja = $"{punaPutanja.Remove(punaPutanja.IndexOf(".txt"))}Bin.bin";
                 tekst = TekstKonverter.TekstualniUBinarni(punaPutanja, binPutanja);
                 tekst = JsonConvert.SerializeObject(tekst);
@@ -129,14 +127,14 @@ internal class WebServer
         }
         catch(Exception ex)
         {
-            Console.WriteLine($"Greška prilikom obrade zahteva: {ex.Message}");
+            Console.WriteLine($"Nit {Thread.CurrentThread.ManagedThreadId}: Greška prilikom obrade zahteva: {ex.Message}");
             response.StatusCode = (int)HttpStatusCode.InternalServerError;
             PosaljiOdgovor(response, "Greška prilikom obrade zahteva");
         }
         finally
         {
             sat.Stop();
-            Console.WriteLine($"Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalSeconds}s.");
+            Console.WriteLine($"Nit {Thread.CurrentThread.ManagedThreadId}: Zahtev sa adrese {request.UserHostAddress} obradjen za: {sat.Elapsed.TotalMilliseconds}ms.");
             response.Close();
         }
     }
